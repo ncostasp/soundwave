@@ -1,12 +1,13 @@
 package modelo.usuarios;
 import enums.TipoSuscripcion;
+import interfaces.IDescargable;
 import modelo.contenido.Contenido;
 import modelo.plataforma.Playlist;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class UsuarioPremium extends Usuario{
+public class UsuarioPremium extends Usuario implements IDescargable {
     private boolean descargasOffline;
     private int maxDescargas;
     private ArrayList<Contenido> descargados;
@@ -63,7 +64,23 @@ public class UsuarioPremium extends Usuario{
 
     }
 
-    public void descargar (Contenido contenido) {}
-    public void eliminarDescargar(Contenido contenido) {}
+
     public boolean verificarEspacioDescarga() {return true;}
+
+
+
+    @Override
+    public boolean descargar(Contenido contenido) {
+        return false;
+    }
+
+    @Override
+    public boolean eliminarDescarga(Contenido contenido) {
+        return false;
+    }
+
+    @Override
+    public int espacioRequerido() {
+        return 0;
+    }
 }
