@@ -1,10 +1,10 @@
 package enums;
 
 public enum TipoSuscripcion {
-    GRATUITO,
-    PREMIUM,
-    FAMILIAR,
-    ESTUDIANTE;
+    GRATUITO(0.0, false, 50, false),
+    PREMIUM(9.99, true, -1, true),
+    FAMILIAR(14.99, true, -1, true),
+    ESTUDIANTE(4.99, true, -1, true);
 
 
     private double precioMensual;
@@ -13,51 +13,38 @@ public enum TipoSuscripcion {
     private boolean descargasOffline;
 
 
-
-    TipoSuscripcion() {
-
+    TipoSuscripcion(double precioMensual, boolean sinAnuncios, int limiteReproducciones, boolean descargasOffline) {
+        this.precioMensual = precioMensual;
+        this.sinAnuncios = sinAnuncios;
+        this.limiteReproducciones = limiteReproducciones;
+        this.descargasOffline = descargasOffline;
     }
-
 
 
     public double getPrecioMensual() {
         return precioMensual;
     }
 
-    public void setPrecioMensual(double precioMensual) {
-        this.precioMensual = precioMensual;
-    }
-
     public boolean isSinAnuncios() {
         return sinAnuncios;
-    }
-
-    public void setSinAnuncios(boolean sinAnuncios) {
-        this.sinAnuncios = sinAnuncios;
     }
 
     public int getLimiteReproducciones() {
         return limiteReproducciones;
     }
 
-    public void setLimiteReproducciones(int limiteReproducciones) {
-        this.limiteReproducciones = limiteReproducciones;
-    }
-
     public boolean isDescargasOffline() {
         return descargasOffline;
     }
 
-    public void setDescargasOffline(boolean descargasOffline) {
-        this.descargasOffline = descargasOffline;
+
+
+    public boolean tieneReproduccionesIlimitadas() {return limiteReproducciones == -1;}
+
+
+
+    @Override
+    public String toString() {
+        return name() + ": " + this.getPrecioMensual() + "€/mes";
     }
-
-
-
-    public double getPrecioMensual;
-    public boolean isSinAnuncios;
-
-
-
-
 }

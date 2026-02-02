@@ -1,6 +1,7 @@
 package modelo.contenido;
 
 import enums.GeneroMusical;
+import excepciones.contenido.DuracionInvalidaException;
 import interfaces.IDescargable;
 import interfaces.IReproducible;
 import modelo.artistas.Album;
@@ -10,26 +11,48 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Cancion extends Contenido implements IReproducible, IDescargable {
-    public String letra;
-    public Artista artista;
-    public Album album;
-    public GeneroMusical genero;
-    public String audioURL;
-    public boolean explicit;
-    public String ISRC;
+    private String letra;
+    private Artista artista;
+    private Album album;
+    private GeneroMusical genero;
+    private String audioURL;
+    private boolean explicit;
+    private String ISRC;
+    private boolean reproduciendo;
+    private boolean pausando;
+    private boolean descargado;
 
 
-    public Cancion(String id, String titulo, int reproducciones, int likes, int duracionSegundos, ArrayList<String> tags, boolean disponible, Date fechaPublicacion, String letra, Artista artista, Album album, GeneroMusical genero, String audioURL, boolean explicit, String ISRC) {
-        super(id, titulo, reproducciones, likes, duracionSegundos, tags, disponible, fechaPublicacion);
-        this.letra = letra;
+    public Cancion(String titulo, int duracionSegundos, Artista artista, GeneroMusical genero) {
+        super(titulo, duracionSegundos);
         this.artista = artista;
-        this.album = album;
         this.genero = genero;
-        this.audioURL = audioURL;
-        this.explicit = explicit;
-        this.ISRC = ISRC;
+        this.letra = null;
+        this.album = null;
+        this.audioURL = "https://soundwave.com/audio/" + id + ".mp3";
+        this.explicit = false;
+        this.ISRC = generarISRC();
+        this.reproduciendo = false;
+        this.pausando = true;
+        this.descargado = false;
     }
 
+
+    public Cancion(String titulo, int duracionSegundos, Artista artista, GeneroMusical genero, String letra, boolean explicit) throws DuracionInvalidaException {
+        super(titulo, duracionSegundos);
+        this.artista = artista;
+        this.genero = genero;
+        this.letra = letra;
+        this.explicit = explicit;
+        this.album = null;
+        this.audioURL = "https://soundwave.com/audio/" + id + ".mp3";
+        this.ISRC = generarISRC();
+        this.reproduciendo = false;
+        this.pausando = true;
+        this.descargado = false;
+    }
+
+    // ESTAMOS AQUÍ
 
     public String getLetra() {
         return letra;

@@ -58,9 +58,10 @@ public class EstadisticasCreador {
         return categoriasFrecuentes;
     }
 
-    public void setCategoriasFrecuentes(HashMap<CategoriaPodcast, Integer> categoriasFrecuentes) {
-        this.categoriasFrecuentes = categoriasFrecuentes;
+    public void addCategoriasFrecuentes(CategoriaPodcast key, Integer categoriaFrecuente) {
+        this.categoriasFrecuentes.put(key, categoriaFrecuente);
     }
+
 
 
     public String generarReporte(){return "h";}

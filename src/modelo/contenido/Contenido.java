@@ -1,37 +1,41 @@
 package modelo.contenido;
 
+import excepciones.contenido.ContenidoNoDisponibleException;
+import excepciones.contenido.DuracionInvalidaException;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 public abstract class Contenido {
-    private String id;
-    private String titulo;
-    private int reproducciones;
-    private int likes;
-    private int duracionSegundos;
-    private ArrayList<String> tags;
-    private boolean disponible;
-    private Date fechaPublicacion;
+    protected String id;
+    protected String titulo;
+    protected int reproducciones;
+    protected int likes;
+    protected int duracionSegundos;
+    protected ArrayList<String> tags;
+    protected boolean disponible;
+    protected Date fechaPublicacion;
 
 
-    public Contenido(String id, String titulo, int reproducciones, int likes, int duracionSegundos, ArrayList<String> tags, boolean disponible, Date fechaPublicacion) {
-        this.id = id;
+    public Contenido(String titulo, int duracionSegundos) {
+        if (duracionSegundos <= 0) {
+            throw new DuracionInvalidaException("La pista está vacía");
+        }
+        this.id = UUID.randomUUID().toString();
         this.titulo = titulo;
-        this.reproducciones = reproducciones;
-        this.likes = likes;
         this.duracionSegundos = duracionSegundos;
+        this.reproducciones = 0;
+        this.likes = 0;
         this.tags = new ArrayList<>();
-        this.disponible = disponible;
-        this.fechaPublicacion = fechaPublicacion;
+        this.disponible = true;
+        this.fechaPublicacion = new Date();
     }
+
 
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getTitulo() {
@@ -54,32 +58,16 @@ public abstract class Contenido {
         return likes;
     }
 
-    public void setLikes(int likes) {
-        this.likes = likes;
-    }
-
     public int getDuracionSegundos() {
         return duracionSegundos;
-    }
-
-    public void setDuracionSegundos(int duracionSegundos) {
-        this.duracionSegundos = duracionSegundos;
     }
 
     public ArrayList<String> getTags() {
         return tags;
     }
 
-    public void addTags(String tag) {
-        this.tags.add(tag);
-    }
-
     public boolean isDisponible() {
         return disponible;
-    }
-
-    public void setDisponible(boolean disponible) {
-        this.disponible = disponible;
     }
 
     public Date getFechaPublicacion() {
@@ -92,10 +80,34 @@ public abstract class Contenido {
 
 
 
-    public abstract void reproducir ();
+    public abstract void reproducir () throws ContenidoNoDisponibleException;
 
-    public void aumentarReproducciones () {};
-    public void agregarLike () {};
-    public boolean esPopular () {return true;};
-    public void validarDuracion () {};
+
+
+    public void aumentarReproducciones () {}
+    public void agregarLike () {}
+    public boolean esPopular () {return true;}
+    public void validarDuracion () throws DuracionInvalidaException {}
+    public void agregarTag(String tag) {}
+    public boolean tieneTag(String tag) {return true;}
+    public void marcarNoDisponible() {}
+    public void marcarDisponible() {}
+    public String getDuracionFormateada() {return "s";}
+
+
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

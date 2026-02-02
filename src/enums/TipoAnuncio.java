@@ -1,16 +1,18 @@
 package enums;
 
 public enum TipoAnuncio {
-    AUDIO,
-    BANNER,
-    VIDEO;
+    AUDIO(15, 0.05),
+    BANNER(0, 0.02),
+    VIDEO(30, 0.10);
 
 
     private int duracionSegundos;
     private double costoPorImpresion;
 
 
-    TipoAnuncio() {
+    TipoAnuncio(int duracionSegundos, double costoPorImpresion) {
+        this.duracionSegundos = duracionSegundos;
+        this.costoPorImpresion = costoPorImpresion;
     }
 
 
@@ -18,15 +20,13 @@ public enum TipoAnuncio {
         return duracionSegundos;
     }
 
-    public void setDuracionSegundos(int duracionSegundos) {
-        this.duracionSegundos = duracionSegundos;
-    }
-
     public double getCostoPorImpresion() {
         return costoPorImpresion;
     }
 
-    public void setCostoPorImpresion(double costoPorImpresion) {
-        this.costoPorImpresion = costoPorImpresion;
+
+    @Override
+    public String toString() {
+        return name() + ": " + this.getDuracionSegundos() + "s";
     }
 }

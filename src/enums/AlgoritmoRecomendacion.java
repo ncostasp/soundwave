@@ -1,15 +1,16 @@
 package enums;
 
 public enum AlgoritmoRecomendacion {
-    COLABORATIVO,
-    CONTENIDO,
-    HIBRIDO;
+    COLABORATIVO("Basado en usuarios similares"),
+    CONTENIDO("Basado en características del contenido"),
+    HIBRIDO("Combinación de ambos");
 
 
     private String descripcion;
 
 
-    AlgoritmoRecomendacion() {
+    AlgoritmoRecomendacion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
 
@@ -17,9 +18,9 @@ public enum AlgoritmoRecomendacion {
         return descripcion;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+
+    @Override
+    public String toString() {
+        return name() + ": " + this.getDescripcion();
     }
-
-
 }
