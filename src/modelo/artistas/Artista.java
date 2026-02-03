@@ -1,9 +1,12 @@
 package modelo.artistas;
 
+import excepciones.artista.AlbumYaExisteException;
+import excepciones.artista.ArtistaNoVerificadoException;
 import modelo.contenido.Cancion;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 public class Artista {
     private String id;
@@ -17,25 +20,36 @@ public class Artista {
     private String biografia;
 
 
-    public Artista(String id, String nombreArtistico, String nombreReal, String paisOrigen, ArrayList<Cancion> discografia, ArrayList<Album> albumes, int oyentesMensuales, boolean verificado, String biografia) {
-        this.id = id;
+    public Artista(String nombreArtistico, String nombreReal, String paisOrigen) {
         this.nombreArtistico = nombreArtistico;
         this.nombreReal = nombreReal;
         this.paisOrigen = paisOrigen;
+        this.id = UUID.randomUUID().toString();
         this.discografia = new ArrayList<>();
         this.albumes = new ArrayList<>();
-        this.oyentesMensuales = oyentesMensuales;
+        this.oyentesMensuales = 0;
+        this.verificado = false;
+        this.biografia = null;
+    }
+
+
+    public Artista(String nombreArtistico, String nombreReal, String paisOrigen, boolean verificado, String biografia) {
+        this.nombreArtistico = nombreArtistico;
+        this.nombreReal = nombreReal;
+        this.paisOrigen = paisOrigen;
         this.verificado = verificado;
         this.biografia = biografia;
+        this.id = UUID.randomUUID().toString();
+        this.discografia = new ArrayList<>();
+        this.albumes = new ArrayList<>();
+        this.oyentesMensuales = 0;
     }
+
+
 
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getNombreArtistico() {
@@ -66,16 +80,8 @@ public class Artista {
         return discografia;
     }
 
-    public void addDiscografia(Cancion discografia) {
-        this.discografia.add(discografia);
-    }
-
     public ArrayList<Album> getAlbumes() {
         return albumes;
-    }
-
-    public void addAlbumes(Album album) {
-        this.albumes.add(album);
     }
 
     public int getOyentesMensuales() {
@@ -103,9 +109,31 @@ public class Artista {
     }
 
 
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+
+
     public void publicarCancion (Cancion cancion) {}
-    public Album crearAlbum (String titulo, Date fecha) {return null;};
+    public Album crearAlbum (String titulo, Date fecha) throws ArtistaNoVerificadoException, AlbumYaExisteException {return null;};
     public ArrayList<Cancion> obtenerTopCanciones (int cantidad) {return null;};
-    public double calcularPromedioReproducciones (){return 0;}
+    public double calcularPromedioReproducciones () {return 0;}
     public boolean esVerificado(){return true;}
+    public int getTotalReproducciones () {return 0;}
+    public void verificar () {}
+    public void incrementarOyentes() {}
+
 }

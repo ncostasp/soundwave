@@ -80,6 +80,23 @@ public abstract class Contenido {
 
 
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+
+
     public abstract void reproducir () throws ContenidoNoDisponibleException;
 
 
@@ -96,18 +113,5 @@ public abstract class Contenido {
 
 
 
-    @Override
-    public String toString() {
-        return super.toString();
-    }
 
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
 }

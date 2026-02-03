@@ -1,6 +1,12 @@
 package modelo.contenido;
 
 import enums.CategoriaPodcast;
+import excepciones.contenido.ContenidoNoDisponibleException;
+import excepciones.contenido.DuracionInvalidaException;
+import excepciones.contenido.EpisodioNoEncontradoException;
+import excepciones.contenido.TranscripcionNoDisponibleException;
+import excepciones.descarga.ContenidoYaDescargadoException;
+import excepciones.descarga.LimiteDescargasException;
 import interfaces.IDescargable;
 import interfaces.IReproducible;
 import modelo.artistas.Creador;
@@ -16,18 +22,40 @@ public class Podcast extends Contenido implements IDescargable, IReproducible {
     private CategoriaPodcast categoria;
     private ArrayList<String> invitados;
     private String transcripcion;
+    private boolean reproduciendo;
+    private boolean pausado;
+    private boolean descargado;
 
 
-    public Podcast(String id, String titulo, int reproducciones, int likes, int duracionSegundos, ArrayList<String> tags, boolean disponible, Date fechaPublicacion, Creador creador, int numeroEpisodio, int temporada, String descripcion, CategoriaPodcast categoria, ArrayList<String> invitados, String transcripcion) {
-        super(id, titulo, reproducciones, likes, duracionSegundos, tags, disponible, fechaPublicacion);
+
+    public Podcast(String titulo, int duracionSegundos, Creador creador, int numeroEpisodio, int temporada, CategoriaPodcast categoria) throws DuracionInvalidaException {
+        super(titulo, duracionSegundos);
+        this.creador = creador;
+        this.numeroEpisodio = numeroEpisodio;
+        this.temporada = temporada;
+        this.categoria = categoria;
+        this.descripcion = null;
+        this.invitados = new ArrayList<>();
+        this.transcripcion = null;
+        this.reproduciendo = false;
+        this.pausado = true;
+        this.descargado = false;
+    }
+
+    public Podcast(String titulo, int duracionSegundos, Creador creador, int numeroEpisodio, int temporada, String descripcion, CategoriaPodcast categoria) throws DuracionInvalidaException {
+        super(titulo, duracionSegundos);
         this.creador = creador;
         this.numeroEpisodio = numeroEpisodio;
         this.temporada = temporada;
         this.descripcion = descripcion;
         this.categoria = categoria;
         this.invitados = new ArrayList<>();
-        this.transcripcion = transcripcion;
+        this.transcripcion = null;
+        this.reproduciendo = false;
+        this.pausado = true;
+        this.descargado = false;
     }
+
 
 
     public Creador getCreador() {
@@ -74,10 +102,6 @@ public class Podcast extends Contenido implements IDescargable, IReproducible {
         return invitados;
     }
 
-    public void addInvitados(String invitado) {
-        this.invitados.add(invitado);
-    }
-
     public String getTranscripcion() {
         return transcripcion;
     }
@@ -86,32 +110,32 @@ public class Podcast extends Contenido implements IDescargable, IReproducible {
         this.transcripcion = transcripcion;
     }
 
+    public boolean isReproduciendo() {
+        return reproduciendo;
+    }
+
+    public boolean isPausado() {
+        return pausado;
+    }
+
+    public boolean isDescargado() {
+        return descargado;
+    }
+
+    public void setDescargado(boolean descargado) {
+        this.descargado = descargado;
+    }
+
+
+
 
     @Override
-    public void reproducir() {
+    public void reproducir() throws ContenidoNoDisponibleException {
 
     }
 
-    public String obtenerDescripcion() {return descripcion;}
-    public void agregarInvitado(String nombre) {}
-    public boolean esTemporadaNueva(){return true;}
 
 
-
-    @Override
-    public boolean descargar(Contenido contenido) {
-        return false;
-    }
-
-    @Override
-    public boolean eliminarDescarga(Contenido contenido) {
-        return false;
-    }
-
-    @Override
-    public int espacioRequerido() {
-        return 0;
-    }
 
     @Override
     public void play() {
@@ -132,4 +156,45 @@ public class Podcast extends Contenido implements IDescargable, IReproducible {
     public int getDuracion() {
         return 0;
     }
+
+
+
+
+    @Override
+    public boolean descargar() throws LimiteDescargasException, ContenidoYaDescargadoException {
+        return false;
+    }
+
+    @Override
+    public boolean eliminarDescarga() {
+        return false;
+    }
+
+    @Override
+    public int espacioRequerido() {
+        return 0;
+    }
+
+
+
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
+
+
+    public String obtenerDescripcion() {return descripcion;}
+    public void agregarInvitado(String nombre) {
+        this.invitados.add(nombre);
+    }
+    public boolean esTemporadaNueva(){return true;}
+    public String obtenerTranscripcion() throws TranscripcionNoDisponibleException {return transcripcion;}
+    public void validarEpisodio() throws EpisodioNoEncontradoException {}
+
+
+
+
+
 }

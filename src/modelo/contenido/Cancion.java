@@ -1,7 +1,12 @@
 package modelo.contenido;
 
 import enums.GeneroMusical;
+import excepciones.contenido.ArchivoAudioNoEncontradoException;
+import excepciones.contenido.ContenidoNoDisponibleException;
 import excepciones.contenido.DuracionInvalidaException;
+import excepciones.contenido.LetraNoDisponibleException;
+import excepciones.descarga.ContenidoYaDescargadoException;
+import excepciones.descarga.LimiteDescargasException;
 import interfaces.IDescargable;
 import interfaces.IReproducible;
 import modelo.artistas.Album;
@@ -52,7 +57,7 @@ public class Cancion extends Contenido implements IReproducible, IDescargable {
         this.descargado = false;
     }
 
-    // ESTAMOS AQUÍ
+
 
     public String getLetra() {
         return letra;
@@ -106,37 +111,31 @@ public class Cancion extends Contenido implements IReproducible, IDescargable {
         return ISRC;
     }
 
-    public void setISRC(String ISRC) {
-        this.ISRC = ISRC;
+    public boolean isReproduciendo() {
+        return reproduciendo;
     }
+
+    public boolean isPausando() {
+        return pausando;
+    }
+
+    public boolean isDescargado() {
+        return descargado;
+    }
+
+    public void setDescargado(boolean descargado) {
+        this.descargado = descargado;
+    }
+
+
 
 
     @Override
-    public void reproducir() {
+    public void reproducir() throws ContenidoNoDisponibleException {
 
     }
 
 
-    public String obtenerLetra(){return letra;}
-    public boolean esExplicit(){return true;}
-    public void cambiarGenero(GeneroMusical genero){};
-
-
-
-    @Override
-    public boolean descargar(Contenido contenido) {
-        return false;
-    }
-
-    @Override
-    public boolean eliminarDescarga(Contenido contenido) {
-        return false;
-    }
-
-    @Override
-    public int espacioRequerido() {
-        return 0;
-    }
 
     @Override
     public void play() {
@@ -157,4 +156,39 @@ public class Cancion extends Contenido implements IReproducible, IDescargable {
     public int getDuracion() {
         return 0;
     }
+
+
+
+    @Override
+    public boolean descargar() throws LimiteDescargasException, ContenidoYaDescargadoException {
+        return false;
+    }
+
+    @Override
+    public boolean eliminarDescarga() {
+        return false;
+    }
+
+    @Override
+    public int espacioRequerido() {
+        return 0;
+    }
+
+
+
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
+
+
+    private String generarISRC() {return ISRC;}
+
+
+    public String obtenerLetra() throws LetraNoDisponibleException {return letra;}
+    public boolean esExplicit() {return true;}
+    public void cambiarGenero(GeneroMusical genero) {};
+    public void validarAudioURL() throws ArchivoAudioNoEncontradoException {}
 }
