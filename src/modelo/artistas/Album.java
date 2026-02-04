@@ -41,7 +41,7 @@ public class Album {
         this.tipoAlbum = tipoAlbum;
         this.id = UUID.randomUUID().toString();
         this.canciones = new ArrayList<>();
-        this.portadaURL = "https://soundwave.com/portadas/" + id + ".jpg";
+        this.portadaURL = "https://soundwave.com/portadas/album/" + id + ".jpg";
     }
 
 
