@@ -1,26 +1,38 @@
 package modelo.usuarios;
 import enums.TipoSuscripcion;
-import interfaces.IDescargable;
+import excepciones.contenido.ContenidoNoDisponibleException;
+import excepciones.descarga.ContenidoYaDescargadoException;
+import excepciones.descarga.LimiteDescargasException;
+import excepciones.usuario.AnuncioRequeridoException;
+import excepciones.usuario.EmailInvalidoException;
+import excepciones.usuario.LimiteDiarioAlcanzadoException;
+import excepciones.usuario.PasswordDebilException;
 import modelo.contenido.Contenido;
-import modelo.plataforma.Playlist;
 
 import java.util.ArrayList;
-import java.util.Date;
 
-public class UsuarioPremium extends Usuario implements IDescargable {
+public class UsuarioPremium extends Usuario {
     private boolean descargasOffline;
     private int maxDescargas;
     private ArrayList<Contenido> descargados;
     private String calidadAudio;
+    private static final int MAX_DESCARGAS_DEFAULT = 100;
 
 
+    public UsuarioPremium(String nombre, String email, String password) throws EmailInvalidoException, PasswordDebilException {
+        super(nombre, email, password, TipoSuscripcion.PREMIUM);
+        this.descargasOffline = true;
+        this.maxDescargas = MAX_DESCARGAS_DEFAULT;
+        this.descargados = new ArrayList<>();
+        this.calidadAudio = null;
+    }
 
-    public UsuarioPremium(String id, String nombre, String email, String password, TipoSuscripcion suscripcion, ArrayList<Playlist> misPlaylists, ArrayList<Contenido> historial, Date fechaRegistro, boolean descargasOffline, int maxDescargas, ArrayList<Contenido> descargados, String calidadAudio) {
-        super(id, nombre, email, password, suscripcion, misPlaylists, historial, fechaRegistro);
-        this.descargasOffline = descargasOffline;
-        this.maxDescargas = maxDescargas;
-        this.descargados = descargados;
-        this.calidadAudio = calidadAudio;
+    public UsuarioPremium(String nombre, String email, String password, TipoSuscripcion suscripcion) throws EmailInvalidoException, PasswordDebilException {
+        super(nombre, email, password, suscripcion);
+        this.descargasOffline = true;
+        this.maxDescargas = MAX_DESCARGAS_DEFAULT;
+        this.descargados = new ArrayList<>();
+        this.calidadAudio = null;
     }
 
 
@@ -37,16 +49,12 @@ public class UsuarioPremium extends Usuario implements IDescargable {
         return maxDescargas;
     }
 
-    public void setMaxDescargas(int maxDescargas) {
-        this.maxDescargas = maxDescargas;
-    }
-
     public ArrayList<Contenido> getDescargados() {
         return descargados;
     }
 
-    public void addDescargados(Contenido descargado) {
-        this.descargados.add(descargado);
+    public int getMAX_DESCARGAS_DEFAULT() {
+        return MAX_DESCARGAS_DEFAULT;
     }
 
     public String getCalidadAudio() {
@@ -60,27 +68,23 @@ public class UsuarioPremium extends Usuario implements IDescargable {
 
 
     @Override
-    public void reproducir(Contenido contenido) {
+    public void reproducir(Contenido contenido) throws ContenidoNoDisponibleException, LimiteDiarioAlcanzadoException, AnuncioRequeridoException {
 
     }
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 
+
+
+    public void descargar (Contenido contenido) throws LimiteDescargasException, ContenidoYaDescargadoException {}
+    public boolean eliminarDescarga(Contenido contenido) {return true;}
     public boolean verificarEspacioDescarga() {return true;}
+    public int getDescargasRestantes() {return 0;}
+    public void cambiarCalidadAudio(String calidad) {}
+    public void limpiarDescargas () {}
 
 
-
-    @Override
-    public boolean descargar(Contenido contenido) {
-        return false;
-    }
-
-    @Override
-    public boolean eliminarDescarga(Contenido contenido) {
-        return false;
-    }
-
-    @Override
-    public int espacioRequerido() {
-        return 0;
-    }
 }

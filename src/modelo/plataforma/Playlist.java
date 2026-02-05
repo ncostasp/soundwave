@@ -1,9 +1,12 @@
 package modelo.plataforma;
 
+import enums.CriterioOrden;
+import excepciones.playlist.ContenidoDuplicadoException;
+import excepciones.playlist.PlaylistLlenaException;
+import excepciones.playlist.PlaylistVaciaException;
 import modelo.contenido.Contenido;
 import modelo.usuarios.Usuario;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
@@ -54,10 +57,6 @@ public class Playlist {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getNombre() {
         return nombre;
     }
@@ -70,16 +69,8 @@ public class Playlist {
         return creador;
     }
 
-    public void setCreador(Usuario creador) {
-        this.creador = creador;
-    }
-
     public ArrayList<Contenido> getContenidos() {
         return contenidos;
-    }
-
-    public void setContenidos(ArrayList<Contenido> contenidos) {
-        this.contenidos = contenidos;
     }
 
     public boolean isEsPublica() {
@@ -118,27 +109,45 @@ public class Playlist {
         return fechaCreacion;
     }
 
-    public void setFechaCreacion(Date fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
     public int getMaxContenidos() {
         return maxContenidos;
     }
 
-    public void setMaxContenidos(int maxContenidos) {
-        this.maxContenidos = maxContenidos;
+
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 
 
 
+    public void agregarContenido (Contenido contenido) throws PlaylistLlenaException, ContenidoDuplicadoException {}
+    public boolean eliminarContenido (String idContenido) {return true;}
+    public boolean eliminarContenido (Contenido contenido) {return true;}
+    public void ordenarPor (CriterioOrden criterio) throws PlaylistVaciaException {}
+    public int getDuracionTotal() {return 0;}
+    public String getDuracionTotalFormateada () {return "o";}
+    public void shuffle (){}
+    public ArrayList<Contenido> buscarContenido (String termino) {return null;}
+    public void hacerPublica () {}
+    public void hacerPrivada () {}
+    public void incrementarSeguidores () {}
+    public void decrementarSeguidores () {}
+    public int getNumContenidos () {return 0;}
+    public boolean estaVacia () {return true;}
+    public Contenido getContenido (int posicion) {return null;}
 
-
-
-
-    public int getMAX_CONTENIDOS_DEFAULT() {
-        return MAX_CONTENIDOS_DEFAULT;
-    }
 
 
 }

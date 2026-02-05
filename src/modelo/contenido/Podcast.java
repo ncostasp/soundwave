@@ -12,7 +12,6 @@ import interfaces.IReproducible;
 import modelo.artistas.Creador;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Podcast extends Contenido implements IDescargable, IReproducible {
     private Creador creador;

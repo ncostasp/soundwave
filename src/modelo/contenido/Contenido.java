@@ -101,15 +101,45 @@ public abstract class Contenido {
 
 
 
-    public void aumentarReproducciones () {}
-    public void agregarLike () {}
-    public boolean esPopular () {return true;}
-    public void validarDuracion () throws DuracionInvalidaException {}
-    public void agregarTag(String tag) {}
-    public boolean tieneTag(String tag) {return true;}
-    public void marcarNoDisponible() {}
-    public void marcarDisponible() {}
-    public String getDuracionFormateada() {return "s";}
+    public void aumentarReproducciones () {
+        this.reproducciones++;
+    }
+
+    public void agregarLike () {
+        this.likes++;
+    }
+
+    public boolean esPopular () {
+        return this.reproducciones > 100000;
+    }
+
+    public void validarDuracion () throws DuracionInvalidaException {
+        if (duracionSegundos <= 0) {
+            throw new DuracionInvalidaException("Duración incorrecta.");
+        }
+    }
+
+    public void agregarTag(String tag) {
+        if (tag != null && !tag.isEmpty() && !tags.contains(tag)) {
+            tags.add(tag);
+        }
+    }
+
+    public boolean tieneTag(String tag) {
+        return tags.contains(tag);
+    }
+
+    public void marcarNoDisponible() {
+        this.disponible = false;
+    }
+
+    public void marcarDisponible() {
+        this.disponible = true;
+    }
+
+    public String getDuracionFormateada() {
+        ;
+    }
 
 
 

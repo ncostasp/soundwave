@@ -12,8 +12,6 @@ import interfaces.IReproducible;
 import modelo.artistas.Album;
 import modelo.artistas.Artista;
 
-import java.util.ArrayList;
-import java.util.Date;
 
 public class Cancion extends Contenido implements IReproducible, IDescargable {
     private String letra;
