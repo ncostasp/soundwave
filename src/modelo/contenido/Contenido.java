@@ -82,17 +82,20 @@ public abstract class Contenido {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "Contenido: " + titulo + ". Duración: " + getDuracionFormateada() + ".";
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Contenido contenido = (Contenido) obj;
+        return id.equals(contenido.id);
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return id.hashCode();
     }
 
 
@@ -138,10 +141,9 @@ public abstract class Contenido {
     }
 
     public String getDuracionFormateada() {
-        ;
+        int minutos = this.duracionSegundos/60;
+        int segundos = this.duracionSegundos%60;
+        return String.format("%d:%02d", minutos, segundos);
     }
-
-
-
 
 }

@@ -112,24 +112,50 @@ public class Artista {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "Artista: " + nombreArtistico + ". Oyentes Mensuales: " + oyentesMensuales + ".";
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Artista artista = (Artista) obj;
+        return id.equals(artista.id);
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return id.hashCode();
     }
 
 
 
-    public void publicarCancion (Cancion cancion) {}
-    public Album crearAlbum (String titulo, Date fecha) throws ArtistaNoVerificadoException, AlbumYaExisteException {return null;};
-    public ArrayList<Cancion> obtenerTopCanciones (int cantidad) {return null;};
+    public void publicarCancion (Cancion cancion) {
+        this.discografia.add(cancion);
+    }
+
+    public Album crearAlbum (String titulo, Date fecha) throws ArtistaNoVerificadoException, AlbumYaExisteException {
+        if (!verificado) {
+            throw new ArtistaNoVerificadoException("El artista no está verificado");
+        }
+
+        for (Album album : albumes) {
+            if (album.getTitulo().equalsIgnoreCase(titulo)) {
+                throw new AlbumYaExisteException("El álbum ya existe");
+            }
+        }
+
+        this.albumes.add(new Album(titulo, this, fecha));
+
+    }
+
+    public ArrayList<Cancion> obtenerTopCanciones (int cantidad) {
+        for (Cancion cancion : discografia) {
+            cancion.getReproducciones();
+            ArrayList<Cancion> topCanciones = new ArrayList<>(cantidad);
+        }
+    };
+
     public double calcularPromedioReproducciones () {return 0;}
     public boolean esVerificado(){return true;}
     public int getTotalReproducciones () {return 0;}

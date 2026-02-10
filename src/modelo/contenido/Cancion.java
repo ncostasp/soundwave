@@ -6,7 +6,6 @@ import excepciones.contenido.ContenidoNoDisponibleException;
 import excepciones.contenido.DuracionInvalidaException;
 import excepciones.contenido.LetraNoDisponibleException;
 import excepciones.descarga.ContenidoYaDescargadoException;
-import excepciones.descarga.LimiteDescargasException;
 import interfaces.IDescargable;
 import interfaces.IReproducible;
 import modelo.artistas.Album;
@@ -22,7 +21,7 @@ public class Cancion extends Contenido implements IReproducible, IDescargable {
     private boolean explicit;
     private String ISRC;
     private boolean reproduciendo;
-    private boolean pausando;
+    private boolean pausado;
     private boolean descargado;
 
 
@@ -36,7 +35,7 @@ public class Cancion extends Contenido implements IReproducible, IDescargable {
         this.explicit = false;
         this.ISRC = generarISRC();
         this.reproduciendo = false;
-        this.pausando = true;
+        this.pausado = true;
         this.descargado = false;
     }
 
@@ -51,7 +50,7 @@ public class Cancion extends Contenido implements IReproducible, IDescargable {
         this.audioURL = "https://soundwave.com/audio/" + id + ".mp3";
         this.ISRC = generarISRC();
         this.reproduciendo = false;
-        this.pausando = true;
+        this.pausado = true;
         this.descargado = false;
     }
 
@@ -113,8 +112,8 @@ public class Cancion extends Contenido implements IReproducible, IDescargable {
         return reproduciendo;
     }
 
-    public boolean isPausando() {
-        return pausando;
+    public boolean isPausado() {
+        return pausado;
     }
 
     public boolean isDescargado() {
@@ -130,46 +129,68 @@ public class Cancion extends Contenido implements IReproducible, IDescargable {
 
     @Override
     public void reproducir() throws ContenidoNoDisponibleException {
-
+        if (disponible) {
+            play();
+            this.reproducciones++;
+        } else {
+            throw new ContenidoNoDisponibleException("La canción no está disponible");
+        }
     }
 
 
 
     @Override
     public void play() {
-
+        this.reproduciendo = true;
+        this.pausado = false;
+        System.out.println("Reproduciendo: " + titulo + " - " + (artista != null ? artista.getNombreArtistico() : "Desconocido"));
     }
 
     @Override
     public void pause() {
-
+        if (reproduciendo) {
+            this.reproduciendo = false;
+            this.pausado = true;
+            System.out.println("Reproducción pausada.");
+        }
     }
 
     @Override
     public void stop() {
-
+        this.reproduciendo = false;
+        this.pausado = false;
+        System.out.println("Reproducción detenida.");
     }
 
     @Override
     public int getDuracion() {
-        return 0;
+        return duracionSegundos;
     }
 
 
 
+
     @Override
-    public boolean descargar() throws LimiteDescargasException, ContenidoYaDescargadoException {
-        return false;
+    public boolean descargar() throws ContenidoYaDescargadoException {
+        if (descargado) {
+            throw new ContenidoYaDescargadoException("La canción ya está descargada.");
+        } else {
+            this.descargado = true;
+        }
     }
 
     @Override
     public boolean eliminarDescarga() {
+        if (descargado) {
+            this.descargado = false;
+            return true;
+        }
         return false;
     }
 
     @Override
     public int espacioRequerido() {
-        return 0;
+        return duracionSegundos/60;
     }
 
 
@@ -177,16 +198,31 @@ public class Cancion extends Contenido implements IReproducible, IDescargable {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "Canción: " + titulo + ". Artista: " + (artista != null ? artista.getNombreArtistico() : "Desconocido") + ".";
     }
 
 
 
-    private String generarISRC() {return ISRC;}
+    private String generarISRC() {
+        return id.substring(0,8).toUpperCase();
+    }
 
 
-    public String obtenerLetra() throws LetraNoDisponibleException {return letra;}
-    public boolean esExplicit() {return true;}
-    public void cambiarGenero(GeneroMusical genero) {};
-    public void validarAudioURL() throws ArchivoAudioNoEncontradoException {}
+
+    public String obtenerLetra() throws LetraNoDisponibleException {
+        if (letra == null || letra.isEmpty()) {
+            throw new LetraNoDisponibleException("Letra no disponible");
+        } else {
+            return letra;
+        }
+    }
+    public boolean esExplicit() {
+        return explicit;
+    }
+
+    public void validarAudioURL() throws ArchivoAudioNoEncontradoException {
+        if (audioURL == null || audioURL.isEmpty()) {
+            throw new ArchivoAudioNoEncontradoException("Archivo de audio no encontrado");
+        }
+    }
 }

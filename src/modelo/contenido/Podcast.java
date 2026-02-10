@@ -6,7 +6,6 @@ import excepciones.contenido.DuracionInvalidaException;
 import excepciones.contenido.EpisodioNoEncontradoException;
 import excepciones.contenido.TranscripcionNoDisponibleException;
 import excepciones.descarga.ContenidoYaDescargadoException;
-import excepciones.descarga.LimiteDescargasException;
 import interfaces.IDescargable;
 import interfaces.IReproducible;
 import modelo.artistas.Creador;
@@ -130,7 +129,12 @@ public class Podcast extends Contenido implements IDescargable, IReproducible {
 
     @Override
     public void reproducir() throws ContenidoNoDisponibleException {
-
+        if (disponible) {
+            play();
+            this.reproducciones++;
+        } else {
+            throw new ContenidoNoDisponibleException("El podcast no está disponible");
+        }
     }
 
 
@@ -138,40 +142,56 @@ public class Podcast extends Contenido implements IDescargable, IReproducible {
 
     @Override
     public void play() {
-
+        this.reproduciendo = true;
+        this.pausado = false;
+        System.out.println("Reproduciendo: " + titulo + " - " + (creador != null ? creador.getNombreCanal() : "Desconocido"));
     }
 
     @Override
     public void pause() {
-
+        if (reproduciendo) {
+            this.reproduciendo = false;
+            this.pausado = true;
+            System.out.println("Reproducción pausada.");
+        }
     }
 
     @Override
     public void stop() {
-
+        this.reproduciendo = false;
+        this.pausado = false;
+        System.out.println("Reproducción detenida.");
     }
 
     @Override
     public int getDuracion() {
-        return 0;
+        return duracionSegundos;
     }
 
 
 
 
     @Override
-    public boolean descargar() throws LimiteDescargasException, ContenidoYaDescargadoException {
-        return false;
+    public boolean descargar() throws ContenidoYaDescargadoException {
+        if (descargado) {
+            throw new ContenidoYaDescargadoException("El Podcast ya está descargado.");
+        } else {
+            this.descargado = true;
+        }
     }
 
     @Override
     public boolean eliminarDescarga() {
+        if (descargado) {
+            this.descargado = false;
+            return true;
+        }
         return false;
     }
 
     @Override
     public int espacioRequerido() {
-        return 0;
+        return duracionSegundos/60;
     }
 
 
@@ -179,18 +199,43 @@ public class Podcast extends Contenido implements IDescargable, IReproducible {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "Canción: " + titulo + ". Artista: " + (creador != null ? creador.getNombreCanal() : "Desconocido") + ".";
     }
 
 
 
-    public String obtenerDescripcion() {return descripcion;}
+
+    public String obtenerDescripcion() {
+        if (descripcion == null || descripcion.isEmpty()) {
+            System.out.println("Descripción no disponible");
+        } else {
+            return descripcion;
+        }
+    }
+
     public void agregarInvitado(String nombre) {
-        this.invitados.add(nombre);
+        if (!invitados.contains(nombre)) {
+            this.invitados.add(nombre);
+        }
     }
-    public boolean esTemporadaNueva(){return true;}
-    public String obtenerTranscripcion() throws TranscripcionNoDisponibleException {return transcripcion;}
-    public void validarEpisodio() throws EpisodioNoEncontradoException {}
+
+    public boolean esTemporadaNueva(){
+        return numeroEpisodio == 1;
+    }
+
+    public String obtenerTranscripcion() throws TranscripcionNoDisponibleException {
+        if (transcripcion == null || transcripcion.isEmpty()) {
+            throw new TranscripcionNoDisponibleException("Transcripción no disponible.");
+        } else {
+            return transcripcion;
+        }
+    }
+
+    public void validarEpisodio() throws EpisodioNoEncontradoException {
+        if (numeroEpisodio <= 0 || temporada <= 0) {
+            throw new EpisodioNoEncontradoException("Temporada/Episodio inválido/s");
+        }
+    }
 
 
 
