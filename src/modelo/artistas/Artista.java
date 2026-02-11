@@ -150,16 +150,41 @@ public class Artista {
     }
 
     public ArrayList<Cancion> obtenerTopCanciones (int cantidad) {
-        for (Cancion cancion : discografia) {
-            cancion.getReproducciones();
-            ArrayList<Cancion> topCanciones = new ArrayList<>(cantidad);
+        ArrayList<Cancion> ordenadas = new ArrayList<>(discografia);
+        ordenadas.sort((c1, c2) -> c2.getReproducciones() - c1.getReproducciones());
+
+        if (cantidad >= ordenadas.size()) {
+            return ordenadas;
         }
+        return new ArrayList<>(ordenadas.subList(0, cantidad));
     };
 
-    public double calcularPromedioReproducciones () {return 0;}
-    public boolean esVerificado(){return true;}
-    public int getTotalReproducciones () {return 0;}
-    public void verificar () {}
-    public void incrementarOyentes() {}
+    public double calcularPromedioReproducciones () {
+        return (double) getTotalReproducciones()/discografia.size();
+    }
+
+    public boolean esVerificado(){
+        return verificado;
+    }
+
+    public int getTotalReproducciones () {
+        if (discografia.isEmpty()) {
+            return 0;
+        }
+
+        int totalReproducciones = 0;
+        for (Cancion cancion : discografia ) {
+            totalReproducciones += cancion.getReproducciones();
+        }
+        return totalReproducciones;
+    }
+
+    public void verificar () {
+        this.verificado = true;
+    }
+
+    public void incrementarOyentes() {
+        this.oyentesMensuales++;
+    }
 
 }
