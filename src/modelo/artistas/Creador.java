@@ -103,24 +103,43 @@ public class Creador {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "Creador: " + getNombreCanal() + ". Suscriptores: " + getSuscriptores() + ".";
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Creador creador = (Creador) obj;
+        return id.equals(creador.id);
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return id.hashCode();
     }
 
 
 
-    public void publicarPodcast (Podcast episodio) throws LimiteEpisodiosException {}
-    public EstadisticasCreador obtenerEstadisticas;
-    public void agregarRedSocial (String red, String usuario) {}
+    public void publicarPodcast (Podcast episodio) throws LimiteEpisodiosException {
+        if (this.episodios.size() >= MAX_EPISODIOS) {
+            throw new LimiteEpisodiosException("Límite de episodios");
+        }
+        this.episodios.add(episodio);
+    }
+
+    public EstadisticasCreador obtenerEstadisticas () {
+        return new EstadisticasCreador(this);
+    }
+
+    ////////////////////////
+
+    public void agregarRedSocial (String red, String usuario) {
+        if (red != null && usuario != null && !red.isEmpty() && !usuario.isEmpty()) {
+            redesSociales.put(red.toLowerCase(), usuario);
+        }
+    }
+
     public double calcularPromedioReproducciones () {return 0;}
     public void eliminarEpisodio (String idEpisodio) throws EpisodioNoEncontradoException {}
     public int getTotalReproducciones () {return 0;}
