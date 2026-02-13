@@ -140,17 +140,18 @@ public class Creador {
     }
 
     public double calcularPromedioReproducciones () {
-        int totalReproducciones = 0;
-        for (Podcast episodio : episodios) {
-            totalReproducciones += episodio.getReproducciones();
-        }
-        return (double) totalReproducciones /episodios.size();
+        return (double) getTotalReproducciones() / episodios.size();
     }
 
     /// ???????????????
 
     public void eliminarEpisodio (String idEpisodio) throws EpisodioNoEncontradoException {
-
+        for (Podcast episodio : episodios) {
+            if (episodio.getId().equals(idEpisodio)) {
+                this.episodios.remove(episodio);
+            }
+        }
+        throw new EpisodioNoEncontradoException("Episodio no encontrado");
     }
 
     public int getTotalReproducciones () {
@@ -179,9 +180,14 @@ public class Creador {
         return new ArrayList<>(ordenados.subList(0, cantidad));
     }
 
-    //////// ????????
-
     public int getUltimaTemporada () {
-        return 0;
+        int temporadaMax = 0;
+
+        for (Podcast episodio : episodios) {
+            if (episodio.getTemporada() > temporadaMax) {
+                temporadaMax = episodio.getTemporada();
+            }
+        }
+        return temporadaMax;
     }
 }
