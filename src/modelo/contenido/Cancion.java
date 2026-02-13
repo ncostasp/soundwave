@@ -177,6 +177,7 @@ public class Cancion extends Contenido implements IReproducible, IDescargable {
         } else {
             this.descargado = true;
         }
+        return true;
     }
 
     @Override

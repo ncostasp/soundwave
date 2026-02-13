@@ -145,8 +145,9 @@ public class Artista {
             }
         }
 
-        this.albumes.add(new Album(titulo, this, fecha));
-
+        Album album = new Album(titulo, this, fecha);
+        this.albumes.add(album);
+        return album;
     }
 
     public ArrayList<Cancion> obtenerTopCanciones (int cantidad) {

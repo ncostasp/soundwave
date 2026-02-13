@@ -3,6 +3,7 @@ package modelo.artistas;
 import enums.CategoriaPodcast;
 import excepciones.artista.LimiteEpisodiosException;
 import excepciones.contenido.EpisodioNoEncontradoException;
+import modelo.contenido.Cancion;
 import modelo.contenido.Podcast;
 import utilidades.EstadisticasCreador;
 
@@ -132,18 +133,55 @@ public class Creador {
         return new EstadisticasCreador(this);
     }
 
-    ////////////////////////
-
     public void agregarRedSocial (String red, String usuario) {
         if (red != null && usuario != null && !red.isEmpty() && !usuario.isEmpty()) {
-            redesSociales.put(red.toLowerCase(), usuario);
+            redesSociales.put(red, usuario);
         }
     }
 
-    public double calcularPromedioReproducciones () {return 0;}
-    public void eliminarEpisodio (String idEpisodio) throws EpisodioNoEncontradoException {}
-    public int getTotalReproducciones () {return 0;}
-    public void incrementarSuscriptores () {}
-    public ArrayList<Podcast> obtenerTopEpisodios(int cantidad) {}
-    public int getUltimaTemporada () {return 0;}
+    public double calcularPromedioReproducciones () {
+        int totalReproducciones = 0;
+        for (Podcast episodio : episodios) {
+            totalReproducciones += episodio.getReproducciones();
+        }
+        return (double) totalReproducciones /episodios.size();
+    }
+
+    /// ???????????????
+
+    public void eliminarEpisodio (String idEpisodio) throws EpisodioNoEncontradoException {
+
+    }
+
+    public int getTotalReproducciones () {
+        if (episodios.isEmpty()) {
+            return 0;
+        }
+
+        int totalReproducciones = 0;
+        for (Podcast episodio : episodios) {
+            totalReproducciones += episodio.getReproducciones();
+        }
+        return totalReproducciones;
+    }
+
+    public void incrementarSuscriptores () {
+        this.suscriptores++;
+    }
+
+    public ArrayList<Podcast> obtenerTopEpisodios(int cantidad) {
+        ArrayList<Podcast> ordenados = new ArrayList<>(episodios);
+        ordenados.sort((c1, c2) -> c2.getReproducciones() - c1.getReproducciones());
+
+        if (cantidad >= ordenados.size()) {
+            return ordenados;
+        }
+        return new ArrayList<>(ordenados.subList(0, cantidad));
+    }
+
+    //////// ????????
+
+    public int getUltimaTemporada () {
+        return 0;
+    }
 }

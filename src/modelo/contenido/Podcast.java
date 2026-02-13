@@ -178,6 +178,7 @@ public class Podcast extends Contenido implements IDescargable, IReproducible {
         } else {
             this.descargado = true;
         }
+        return true;
     }
 
     @Override
@@ -207,7 +208,7 @@ public class Podcast extends Contenido implements IDescargable, IReproducible {
 
     public String obtenerDescripcion() {
         if (descripcion == null || descripcion.isEmpty()) {
-            System.out.println("Descripción no disponible");
+            return "Descripción no disponible";
         } else {
             return descripcion;
         }
