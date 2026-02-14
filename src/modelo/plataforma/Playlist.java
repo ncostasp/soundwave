@@ -4,12 +4,11 @@ import enums.CriterioOrden;
 import excepciones.playlist.ContenidoDuplicadoException;
 import excepciones.playlist.PlaylistLlenaException;
 import excepciones.playlist.PlaylistVaciaException;
+import modelo.contenido.Cancion;
 import modelo.contenido.Contenido;
 import modelo.usuarios.Usuario;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 public class Playlist {
     private String id;
@@ -171,7 +170,12 @@ public class Playlist {
             throw new PlaylistVaciaException("La Playlist está vacía");
         }
         switch (criterio) {
-            case FECHA_AGREGADO -> contenidos.sort((c1, c2) -> ;
+            case FECHA_AGREGADO -> contenidos.sort((c1, c2) -> c2.getFechaPublicacion().compareTo(c1.getFechaPublicacion()));
+            case POPULARIDAD -> contenidos.sort((c1, c2) -> c2.getReproducciones() - c1.getReproducciones());
+            case DURACION -> contenidos.sort((c1, c2) -> c2.getDuracionSegundos() - c1.getDuracionSegundos());
+            case ALFABETICO -> contenidos.sort((c1, c2) -> c2.getTitulo().compareToIgnoreCase(c1.getTitulo()));
+            case ARTISTA -> contenidos.sort((c1, c2) -> ((Cancion) c1).getArtista().getNombreArtistico().compareToIgnoreCase(((Cancion) c2).getArtista().getNombreArtistico()));
+            case ALEATORIO -> Collections.shuffle(contenidos);
         }
     }
 
