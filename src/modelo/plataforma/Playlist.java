@@ -117,25 +117,64 @@ public class Playlist {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "Playlist: " + getNombre() + ". Creador: " + getCreador() + ".";
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Playlist playlist = (Playlist) obj;
+        return id.equals(playlist.id);
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return id.hashCode();
     }
 
 
 
-    public void agregarContenido (Contenido contenido) throws PlaylistLlenaException, ContenidoDuplicadoException {}
-    public boolean eliminarContenido (String idContenido) {return true;}
-    public boolean eliminarContenido (Contenido contenido) {return true;}
-    public void ordenarPor (CriterioOrden criterio) throws PlaylistVaciaException {}
+    public void agregarContenido (Contenido contenido) throws PlaylistLlenaException, ContenidoDuplicadoException {
+        if (contenidos.size() >= maxContenidos) {
+            throw new PlaylistLlenaException("La playlist ya está llena.");
+        }
+
+        if (contenidos.contains(contenido)) {
+            throw new ContenidoDuplicadoException("El contenido ya está en la playlist");
+        }
+
+        this.contenidos.add(contenido);
+    }
+
+    public boolean eliminarContenido (String idContenido) {
+        for (int i = 0; i < contenidos.size(); i++) {
+            Contenido contenido = contenidos.get(i);
+            if (contenido.getId().equals(idContenido)) {
+                contenidos.remove(contenido);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean eliminarContenido (Contenido contenido) {
+        if (contenidos.contains(contenido)) {
+            contenidos.remove(contenido);
+            return true;
+        }
+        return false;
+    }
+
+    public void ordenarPor (CriterioOrden criterio) throws PlaylistVaciaException {
+        if (contenidos.isEmpty()) {
+            throw new PlaylistVaciaException("La Playlist está vacía");
+        }
+        switch (criterio) {
+            case FECHA_AGREGADO -> contenidos.sort((c1, c2) -> ;
+        }
+    }
+
     public int getDuracionTotal() {return 0;}
     public String getDuracionTotalFormateada () {return "o";}
     public void shuffle (){}

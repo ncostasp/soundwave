@@ -143,16 +143,19 @@ public class Creador {
         return (double) getTotalReproducciones() / episodios.size();
     }
 
-    /// ???????????????
 
-    public void eliminarEpisodio (String idEpisodio) throws EpisodioNoEncontradoException {
-        for (Podcast episodio : episodios) {
+    public void eliminarEpisodio(String idEpisodio) throws EpisodioNoEncontradoException {
+        for (int i = 0; i < episodios.size(); i++) {
+            Podcast episodio = episodios.get(i);
+
             if (episodio.getId().equals(idEpisodio)) {
-                this.episodios.remove(episodio);
+                episodios.remove(i);
+                return;
             }
         }
         throw new EpisodioNoEncontradoException("Episodio no encontrado");
     }
+
 
     public int getTotalReproducciones () {
         if (episodios.isEmpty()) {

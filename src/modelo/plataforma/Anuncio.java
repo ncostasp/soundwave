@@ -96,30 +96,60 @@ public class Anuncio {
 
 
 
-
     @Override
     public String toString() {
-        return super.toString();
+        return "Empresa: " + getEmpresa() + ". Anuncio: " + getId() + ". Activo: " + isActivo() + ".";
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Anuncio anuncio = (Anuncio) obj;
+        return id.equals(anuncio.id);
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return id.hashCode();
     }
 
 
 
-    public void reproducir () {}
-    public void registrarImpresion () {}
-    public double calcularCostoPorImpresion () {return 0;}
-    public double calcularCostoTotal () {return 0;}
-    public int calcularImpresionesRestantes () {return 0;}
-    public void desactivar () {}
-    public void activar () {}
-    public boolean puedeMostrarse () {return true;}
+    public void reproducir () {
+        if (puedeMostrarse()) {
+            registrarImpresion();
+        }
+    }
+
+    public void registrarImpresion () {
+        this.impresiones++;
+        if (presupuesto <= calcularCostoTotal()) {
+            this.activo = false;
+        }
+    }
+
+    public double calcularCostoPorImpresion () {
+        return this.getTipo().getCostoPorImpresion();
+    }
+
+    public double calcularCostoTotal () {
+        return calcularCostoPorImpresion()*impresiones;
+    }
+
+    public int calcularImpresionesRestantes () {
+        return (int) (presupuesto - calcularCostoTotal());
+    }
+
+    public void desactivar () {
+        this.activo = false;
+    }
+
+    public void activar () {
+        this.activo = true;
+    }
+
+    public boolean puedeMostrarse () {
+        return activo && presupuesto >= calcularCostoPorImpresion();
+    }
 }
