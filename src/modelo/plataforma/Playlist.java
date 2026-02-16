@@ -179,17 +179,67 @@ public class Playlist {
         }
     }
 
-    public int getDuracionTotal() {return 0;}
-    public String getDuracionTotalFormateada () {return "o";}
-    public void shuffle (){}
-    public ArrayList<Contenido> buscarContenido (String termino) {return null;}
-    public void hacerPublica () {}
-    public void hacerPrivada () {}
-    public void incrementarSeguidores () {}
-    public void decrementarSeguidores () {}
-    public int getNumContenidos () {return 0;}
-    public boolean estaVacia () {return true;}
-    public Contenido getContenido (int posicion) {return null;}
+    public int getDuracionTotal() {
+        int duracionTotal = 0;
+        for (Contenido contenido : contenidos) {
+            duracionTotal = duracionTotal + contenido.getDuracionSegundos();
+        }
+        return duracionTotal;
+    }
+
+    public String getDuracionTotalFormateada () {
+        int horas = getDuracionTotal()/3600;
+        int minutos = (getDuracionTotal()%3600)/60;
+        int segundos = (getDuracionTotal()%3600)%60;
+        if (horas > 0 ) {
+            return String.format("%02d:%02d", horas, minutos);
+        }
+        return String.format("%02d:%02d", minutos, segundos);
+    }
+
+    public void shuffle () {
+        Collections.shuffle(contenidos);
+    }
+
+    public ArrayList<Contenido> buscarContenido (String termino) {
+        ArrayList<Contenido> coincidencias = new ArrayList<>();
+        for (Contenido contenido : contenidos) {
+            if (contenido.getTitulo().equalsIgnoreCase(termino)) {
+                coincidencias.add(contenido);
+            }
+        }
+        return coincidencias;
+    }
+
+    public void hacerPublica () {
+        this.esPublica = true;
+    }
+
+    public void hacerPrivada () {
+        this.esPublica = false;
+    }
+
+    public void incrementarSeguidores () {
+        this.seguidores++;
+    }
+
+    public void decrementarSeguidores () {
+        if (this.seguidores > 0) {
+            this.seguidores--;
+        }
+    }
+
+    public int getNumContenidos () {
+        return this.contenidos.size();
+    }
+
+    public boolean estaVacia () {
+        return this.contenidos.isEmpty();
+    }
+
+    public Contenido getContenido (int posicion) {
+        return this.contenidos.get(posicion);
+    }
 
 
 

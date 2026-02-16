@@ -25,7 +25,7 @@ public class Cancion extends Contenido implements IReproducible, IDescargable {
     private boolean descargado;
 
 
-    public Cancion(String titulo, int duracionSegundos, Artista artista, GeneroMusical genero) {
+    public Cancion(String titulo, int duracionSegundos, Artista artista, GeneroMusical genero) throws DuracionInvalidaException {
         super(titulo, duracionSegundos);
         this.artista = artista;
         this.genero = genero;

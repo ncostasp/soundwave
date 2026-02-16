@@ -18,7 +18,7 @@ public abstract class Contenido {
     protected Date fechaPublicacion;
 
 
-    public Contenido(String titulo, int duracionSegundos) {
+    public Contenido(String titulo, int duracionSegundos) throws DuracionInvalidaException {
         if (duracionSegundos <= 0) {
             throw new DuracionInvalidaException("La pista está vacía");
         }

@@ -101,17 +101,20 @@ public abstract class Usuario {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "Usuario: " + getNombre() + ". Email: " + getEmail() + ".";
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Usuario usuario = (Usuario) obj;
+        return id.equals(usuario.id);
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return id.hashCode();
     }
 
 
