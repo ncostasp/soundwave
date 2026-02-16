@@ -66,7 +66,15 @@ public class UsuarioGratuito extends Usuario {
 
     @Override
     public void reproducir(Contenido contenido) throws ContenidoNoDisponibleException, LimiteDiarioAlcanzadoException, AnuncioRequeridoException {
-
+        if (!puedeReproducir()) {
+            throw new LimiteDiarioAlcanzadoException("Límite diario alcanzado");
+        }
+        if (debeVerAnuncio()) {
+            throw new AnuncioRequeridoException("Anuncio requerido");
+        }
+        contenido.reproducir();
+        this.reproduccionesHoy++;
+        this.cancionesSinAnuncio--;
     }
 
     @Override
@@ -75,13 +83,32 @@ public class UsuarioGratuito extends Usuario {
     }
 
 
+    public void verAnuncio () {
 
-    public void verAnuncio () {}
-    public void verAnuncio(Anuncio anuncio) {}
-    public boolean puedeReproducir () {return true;}
-    public boolean debeVerAnuncio () {return true;}
-    public void reiniciarContadorDiario() {}
-    public int getReproduccionesRestantes () {return 0;}
-    public int getCancionesHastaAnuncio () {return 0;}
+    }
+
+    public void verAnuncio(Anuncio anuncio) {
+
+    }
+
+    public boolean puedeReproducir () {
+        return this.reproduccionesHoy < this.limiteReproducciones;
+    }
+
+    public boolean debeVerAnuncio () {
+        return this.cancionesSinAnuncio <= 0;
+    }
+
+    public void reiniciarContadorDiario() {
+        this.reproduccionesHoy = 0;
+    }
+
+    public int getReproduccionesRestantes () {
+        return this.limiteReproducciones - this.reproduccionesHoy;
+    }
+
+    public int getCancionesHastaAnuncio () {
+        return this.cancionesSinAnuncio;
+    }
 
 }

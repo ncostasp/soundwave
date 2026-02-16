@@ -29,7 +29,9 @@ public abstract class Usuario {
     public Usuario(String nombre, String email, String password, TipoSuscripcion suscripcion) throws EmailInvalidoException, PasswordDebilException {
         this.nombre = nombre;
         this.email = email;
+        validarEmail();
         this.password = password;
+        validarPassword();
         this.suscripcion = suscripcion;
         this.id = UUID.randomUUID().toString();
         this.misPlaylists = new ArrayList<>();
@@ -124,15 +126,62 @@ public abstract class Usuario {
 
 
 
-    public Playlist crearPlaylist(String nombrePlaylist) {}
-    public void seguirPlaylist (Playlist playlist) {}
-    public void dejarDeSeguirPlaylist(Playlist playlist) {}
-    public void darLike (Contenido contenido) {}
-    public void quitarLike (Contenido contenido) {}
-    public boolean validarEmail () {return true;}
-    public boolean validarPassword () {return true;}
-    public void agregarAlHistorial(Contenido contenido) {}
-    public void limpiarHistorial() {}
-    public boolean esPremium() {return true;}
+    public Playlist crearPlaylist(String nombrePlaylist) {
+        Playlist playlist = new Playlist(nombrePlaylist, this);
+        playlist.setEsPublica(false);
+        this.misPlaylists.add(playlist);
+        return playlist;
+    }
+
+    public void seguirPlaylist (Playlist playlist) {
+        if (playlist.isEsPublica()) {
+            playlist.incrementarSeguidores();
+            this.playlistsSeguidas.add(playlist);
+        }
+    }
+
+    public void dejarDeSeguirPlaylist(Playlist playlist) {
+        if (this.playlistsSeguidas.contains(playlist)) {
+            playlist.decrementarSeguidores();
+            this.playlistsSeguidas.remove(playlist);
+        }
+    }
+
+    public void darLike (Contenido contenido) {
+        contenido.agregarLike();
+        this.contenidosLiked.add(contenido);
+    }
+
+    public void quitarLike (Contenido contenido) {
+        this.contenidosLiked.remove(contenido);
+    }
+
+    public boolean validarEmail () throws EmailInvalidoException {
+        if (this.email == null || !this.email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+            throw new EmailInvalidoException("Email inválido");
+        }
+        return true;
+    }
+
+    public boolean validarPassword () throws PasswordDebilException {
+        if (this.password == null || !this.password.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%&*?]).{8,20}$")) {
+            throw new PasswordDebilException("Contraseña débil/inválida");
+        }
+        return true;
+    }
+
+    public void agregarAlHistorial(Contenido contenido) {
+        if (this.historial.size() < 10) {
+            this.historial.add(contenido);
+        }
+    }
+
+    public void limpiarHistorial() {
+        this.historial.clear();
+    }
+
+    public boolean esPremium() {
+        return this.suscripcion.equals(TipoSuscripcion.PREMIUM);
+    }
 
 }

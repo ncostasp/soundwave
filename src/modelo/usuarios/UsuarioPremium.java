@@ -69,8 +69,9 @@ public class UsuarioPremium extends Usuario {
 
     @Override
     public void reproducir(Contenido contenido) throws ContenidoNoDisponibleException, LimiteDiarioAlcanzadoException, AnuncioRequeridoException {
-
+        contenido.reproducir();
     }
+
 
     @Override
     public String toString() {
@@ -79,12 +80,41 @@ public class UsuarioPremium extends Usuario {
 
 
 
-    public void descargar (Contenido contenido) throws LimiteDescargasException, ContenidoYaDescargadoException {}
-    public boolean eliminarDescarga(Contenido contenido) {return true;}
-    public boolean verificarEspacioDescarga() {return true;}
-    public int getDescargasRestantes() {return 0;}
-    public void cambiarCalidadAudio(String calidad) {}
-    public void limpiarDescargas () {}
+    public void descargar (Contenido contenido) throws LimiteDescargasException, ContenidoYaDescargadoException {
+        if (this.descargados.contains(contenido)) {
+            throw new ContenidoYaDescargadoException("Contenido ya descargado");
+        }
+        if (this.descargados.size() >= this.maxDescargas) {
+            throw new LimiteDescargasException("Límite de descargas alcanzado");
+        }
+        this.descargados.add(contenido);
+    }
+
+    public boolean eliminarDescarga(Contenido contenido) {
+        if (this.descargados.contains(contenido)) {
+            this.descargados.remove(contenido);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean verificarEspacioDescarga() {
+        return this.descargados.size() < this.maxDescargas;
+    }
+
+    public int getDescargasRestantes() {
+        return this.maxDescargas - this.descargados.size();
+    }
+
+    public void cambiarCalidadAudio(String calidad) {
+        if (calidad != null) {
+            this.calidadAudio = calidad;
+        }
+    }
+
+    public void limpiarDescargas () {
+        this.descargados.clear();
+    }
 
 
 }

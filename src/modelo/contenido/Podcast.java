@@ -131,7 +131,7 @@ public class Podcast extends Contenido implements IDescargable, IReproducible {
     public void reproducir() throws ContenidoNoDisponibleException {
         if (disponible) {
             play();
-            this.reproducciones++;
+            aumentarReproducciones();
         } else {
             throw new ContenidoNoDisponibleException("El podcast no está disponible");
         }

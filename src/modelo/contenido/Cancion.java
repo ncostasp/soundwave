@@ -131,7 +131,7 @@ public class Cancion extends Contenido implements IReproducible, IDescargable {
     public void reproducir() throws ContenidoNoDisponibleException {
         if (disponible) {
             play();
-            this.reproducciones++;
+            aumentarReproducciones();
         } else {
             throw new ContenidoNoDisponibleException("La canción no está disponible");
         }
