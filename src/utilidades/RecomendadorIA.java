@@ -164,13 +164,13 @@ public class RecomendadorIA implements IRecomendador {
             if (c.equals(contenido)) continue;
 
             if (c instanceof Cancion && contenido instanceof Cancion) {
-                if (((Cancion) c).getGenero().equalsIgnoreCase(((Cancion) contenido).getGenero())) {
+                if (((Cancion) c).getGenero().equals(((Cancion) contenido).getGenero())) {
                     similares.add(c);
                 }
             }
 
             if (c instanceof Podcast && contenido instanceof Podcast) {
-                if (((Podcast) c).getCategoria().equalsIgnoreCase(((Podcast) contenido).getCategoria())) {
+                if (((Podcast) c).getCategoria().equals(((Podcast) contenido).getCategoria())) {
                     similares.add(c);
                 }
             }
@@ -233,9 +233,9 @@ public class RecomendadorIA implements IRecomendador {
         ArrayList<String> preferencias = new ArrayList<>();
         for (Contenido c : usuario.getHistorial()) {
             if (c instanceof Cancion) {
-                preferencias.add(((Cancion) c).getGenero());
+                preferencias.add(String.valueOf(((Cancion) c).getGenero()));
             } else if (c instanceof Podcast) {
-                preferencias.add(((Podcast) c).getCategoria());
+                preferencias.add(String.valueOf(((Podcast) c).getCategoria()));
             }
         }
         matrizPreferencias.put(usuario.getId(), preferencias);
@@ -248,9 +248,9 @@ public class RecomendadorIA implements IRecomendador {
             for (Contenido c : historialUsuario) {
                 String key = null;
                 if (c instanceof Cancion) {
-                    key = ((Cancion) c).getGenero();
+                    key = String.valueOf(((Cancion) c).getGenero());
                 } else if (c instanceof Podcast) {
-                    key = ((Podcast) c).getCategoria();
+                    key = String.valueOf(((Podcast) c).getCategoria());
                 }
 
                 if (key != null) {

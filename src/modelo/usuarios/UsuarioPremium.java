@@ -117,4 +117,11 @@ public class UsuarioPremium extends Usuario {
     }
 
 
+
+
+    public int getNumDescargados () {
+        return descargados.size();
+    }
+
+
 }

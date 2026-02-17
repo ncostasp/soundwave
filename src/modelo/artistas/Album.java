@@ -19,7 +19,7 @@ public class Album {
     private String portadaURL;
     private String discografia;
     private String tipoAlbum;
-    private static final int MAX_CANCIONES = 20;
+    private static final int MaxCanciones = 20;
 
 
     public Album(String titulo, Artista artista, Date fechaLanzamiento) {
@@ -102,8 +102,8 @@ public class Album {
         this.tipoAlbum = tipoAlbum;
     }
 
-    public int getMAX_CANCIONES() {
-        return MAX_CANCIONES;
+    public int getMaxCanciones() {
+        return MaxCanciones;
     }
 
 
@@ -129,7 +129,7 @@ public class Album {
 
 
     public Cancion crearCancion (String titulo, int duracion, GeneroMusical genero) throws AlbumCompletoException, DuracionInvalidaException {
-        if (this.canciones.size() >= MAX_CANCIONES) {
+        if (this.canciones.size() >= MaxCanciones) {
             throw new AlbumCompletoException("El álbum ya está completo");
         }
 
@@ -149,7 +149,7 @@ public class Album {
     }
 
     public Cancion crearCancion (String titulo, int duracion, GeneroMusical genero, String letra, boolean explicit) throws AlbumCompletoException, DuracionInvalidaException {
-        if (this.canciones.size() >= MAX_CANCIONES) {
+        if (this.canciones.size() >= MaxCanciones) {
             throw new AlbumCompletoException("El álbum ya está completo");
         }
 

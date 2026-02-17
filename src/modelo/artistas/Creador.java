@@ -193,4 +193,11 @@ public class Creador {
         }
         return temporadaMax;
     }
+
+
+
+
+    public int getNumEpisodios () {
+        return episodios.size();
+    }
 }
