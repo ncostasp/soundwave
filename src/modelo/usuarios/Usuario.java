@@ -164,7 +164,7 @@ public abstract class Usuario {
     }
 
     public boolean validarPassword () throws PasswordDebilException {
-        if (this.password == null || !this.password.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%&*?]).{8,20}$")) {
+        if (this.password == null || !this.password.matches("^(?=.*[A-Z a-z])(?=.*\\d).{8,20}$")) {
             throw new PasswordDebilException("Contraseña débil/inválida");
         }
         return true;

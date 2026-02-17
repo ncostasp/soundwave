@@ -96,7 +96,9 @@ public class UsuarioGratuito extends Usuario {
     public void verAnuncio(Anuncio anuncio) {
         if (anuncio == null) {
             Anuncio anuncioG = Plataforma.getInstancia().obtenerAnuncioAleatorio();
-            anuncioG.reproducir();
+            if (anuncioG != null) {
+                anuncioG.reproducir();
+            }
         } else {
             anuncio.reproducir();
         }
