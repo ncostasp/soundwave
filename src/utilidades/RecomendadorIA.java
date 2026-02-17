@@ -71,7 +71,10 @@ public class RecomendadorIA implements IRecomendador {
 
     @Override
     public ArrayList<Contenido> recomendar(Usuario usuario) throws RecomendacionException {
-        return null;
+        if (!modeloEntrenado || historialCompleto.isEmpty()) {
+            throw new RecomendacionException("No es posible generar recomendaciones");
+        }
+
     }
 
     @Override

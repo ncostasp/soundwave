@@ -27,6 +27,7 @@ public class EstadisticasCreador {
         this.duracionTotalSegundos = 0;
         this.episodioMasPopular = null;
         this.episodiosPorTemporada = new HashMap<>();
+        calcularEstadisticas();
     }
 
 
@@ -71,15 +72,54 @@ public class EstadisticasCreador {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "Creador: " + getCreador() + ". Suscriptores: " + getTotalSuscriptores() + ".";
     }
 
 
-    private void calcularEstadisticas() {}
-    private String formatearDuracion () {return "o";}
+    private void calcularEstadisticas() {
+        for (Podcast p : creador.getEpisodios()) {
+            this.totalEpisodios++;
+
+            this.totalLikes += p.getLikes();
+            this.duracionTotalSegundos += p.getDuracionSegundos();
+
+            if (this.episodioMasPopular == null || this.episodioMasPopular.getReproducciones() < p.getReproducciones()) {
+                this.episodioMasPopular = p;
+            }
+
+            int temporada = p.getTemporada();
+            this.episodiosPorTemporada.put(
+                    temporada,
+                    this.episodiosPorTemporada.getOrDefault(temporada, 0) + 1
+            );
+        }
+        this.totalReproducciones = creador.getTotalReproducciones();
+        this.promedioReproducciones = creador.calcularPromedioReproducciones();
+        this.totalSuscriptores = creador.getSuscriptores();
+    }
+
+    private String formatearDuracion () {
+        return String.valueOf(duracionTotalSegundos);
+    }
 
 
-    public String generarReporte(){return "h";}
-    public double calcularEngagement () {return 0;}
-    public int estimarCrecimientoMensual() {return 0;}
+    public String generarReporte() {
+        return "Creador: " + getCreador() + "\n" +
+                "Suscriptores: " + getTotalSuscriptores() + "\n" +
+                "Likes: " + getTotalLikes() + "\n" +
+                "Total episodios: " + getTotalEpisodios() + "\n" +
+                "Duración Total (s): " + getDuracionTotalSegundos() + "\n" +
+                "Total reproducciones: " + getTotalReproducciones() + "\n" +
+                "Promedio reproducciones: " + getPromedioReproducciones() + "\n" +
+                "Episodio más popular: " + getEpisodioMasPopular() + "\n" +
+                "Episodios por temporada: " + getEpisodiosPorTemporada();
+    }
+
+    public double calcularEngagement () {
+        return ((double) getTotalLikes() /getTotalReproducciones())*100;
+    }
+
+    public int estimarCrecimientoMensual() {
+        return (int) (getPromedioReproducciones()/100);
+    }
 }

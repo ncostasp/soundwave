@@ -8,6 +8,7 @@ import excepciones.usuario.LimiteDiarioAlcanzadoException;
 import excepciones.usuario.PasswordDebilException;
 import modelo.contenido.Contenido;
 import modelo.plataforma.Anuncio;
+import modelo.plataforma.Plataforma;
 
 import java.util.Date;
 
@@ -25,11 +26,11 @@ public class UsuarioGratuito extends Usuario {
     public UsuarioGratuito(String nombre, String email, String password) throws EmailInvalidoException, PasswordDebilException {
         super(nombre, email, password, TipoSuscripcion.GRATUITO);
         this.anunciosEscuchados = 0;
-        this.ultimoAnuncio = new Date();
+        this.ultimoAnuncio = null;
         this.reproduccionesHoy = 0;
         this.limiteReproducciones = LIMITE_DIARIO;
         this.cancionesSinAnuncio = CANCIONES_ENTRE_ANUNCIOS;
-        this.fechaUltimaReproduccion = new Date();
+        this.fechaUltimaReproduccion = null;
     }
 
 
@@ -75,6 +76,7 @@ public class UsuarioGratuito extends Usuario {
         contenido.reproducir();
         this.reproduccionesHoy++;
         this.cancionesSinAnuncio--;
+        this.fechaUltimaReproduccion = new Date();
     }
 
     @Override
@@ -84,15 +86,27 @@ public class UsuarioGratuito extends Usuario {
 
 
     public void verAnuncio () {
-
+        Anuncio anuncio = Plataforma.getInstancia().obtenerAnuncioAleatorio();
+        anuncio.reproducir();
+        this.anunciosEscuchados++;
+        this.cancionesSinAnuncio = 3;
+        this.ultimoAnuncio = new Date();
     }
 
     public void verAnuncio(Anuncio anuncio) {
-
+        if (anuncio == null) {
+            Anuncio anuncioG = Plataforma.getInstancia().obtenerAnuncioAleatorio();
+            anuncioG.reproducir();
+        } else {
+            anuncio.reproducir();
+        }
+        this.anunciosEscuchados++;
+        this.cancionesSinAnuncio = 3;
+        this.ultimoAnuncio = new Date();
     }
 
     public boolean puedeReproducir () {
-        return this.reproduccionesHoy < this.limiteReproducciones;
+        return getReproduccionesRestantes() > 0;
     }
 
     public boolean debeVerAnuncio () {

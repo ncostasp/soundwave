@@ -27,6 +27,7 @@ import utilidades.RecomendadorIA;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Random;
 
 public class Plataforma {
     private static Plataforma instancia;
@@ -160,7 +161,11 @@ public class Plataforma {
 
     // Anuncios
 
-    public Anuncio obtenerAnuncioAleatorio() {}
+    public Anuncio obtenerAnuncioAleatorio() {
+        Random r = new Random();
+        return anuncios.get(r.nextInt(anuncios.size()));
+    }
+
     public void incrementarAnunciosReproducidos() {}
 
 
