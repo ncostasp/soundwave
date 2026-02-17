@@ -80,7 +80,7 @@ public class Cancion extends Contenido implements IReproducible, IDescargable {
         this.album = album;
     }
 
-    public GeneroMusical getGenero() {
+    public String getGenero() {
         return genero;
     }
 

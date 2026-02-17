@@ -88,7 +88,7 @@ public class Podcast extends Contenido implements IDescargable, IReproducible {
         this.descripcion = descripcion;
     }
 
-    public CategoriaPodcast getCategoria() {
+    public String getCategoria() {
         return categoria;
     }
 
