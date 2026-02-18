@@ -112,7 +112,14 @@ public class Escenario6RecomendacionesTest {
     @Order(3)
     @DisplayName("6.3 - Generar recomendaciones para usuario con historial")
     void testRecomendarConHistorial() throws RecomendacionException {
-        ArrayList<Contenido> recomendaciones = recomendador.recomendar(userConHistorial);
+        ArrayList<Contenido> recomendaciones = null;
+        try {
+            recomendaciones = recomendador.recomendar(userConHistorial);
+        } catch (HistorialVacioException e) {
+            throw new RuntimeException(e);
+        } catch (ModeloNoEntrenadoException e) {
+            throw new RuntimeException(e);
+        }
 
         assertNotNull(recomendaciones);
         // Las recomendaciones no deben estar vacías o deben existir
@@ -211,7 +218,14 @@ public class Escenario6RecomendacionesTest {
     @Order(10)
     @DisplayName("6.10 - Recomendaciones no incluyen contenido ya escuchado")
     void testRecomendacionesNoIncluyenHistorial() throws RecomendacionException {
-        ArrayList<Contenido> recomendaciones = recomendador.recomendar(userConHistorial);
+        ArrayList<Contenido> recomendaciones = null;
+        try {
+            recomendaciones = recomendador.recomendar(userConHistorial);
+        } catch (HistorialVacioException e) {
+            throw new RuntimeException(e);
+        } catch (ModeloNoEntrenadoException e) {
+            throw new RuntimeException(e);
+        }
         ArrayList<Contenido> historial = userConHistorial.getHistorial();
 
         for (Contenido rec : recomendaciones) {

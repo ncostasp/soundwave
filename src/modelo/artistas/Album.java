@@ -210,8 +210,7 @@ public class Album {
     }
 
     public void ordenarPorPopularidad() {
-        ArrayList<Cancion> ordenadas = new ArrayList<>(canciones);
-        ordenadas.sort((c1, c2) -> c2.getReproducciones() - c1.getReproducciones());
+        canciones.sort((c1, c2) -> c2.getReproducciones() - c1.getReproducciones());
     }
 
     public Cancion getCancion (int posicion) throws CancionNoEncontradaException {

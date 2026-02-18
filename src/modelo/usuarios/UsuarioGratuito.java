@@ -29,7 +29,7 @@ public class UsuarioGratuito extends Usuario {
         this.ultimoAnuncio = null;
         this.reproduccionesHoy = 0;
         this.limiteReproducciones = LIMITE_DIARIO;
-        this.cancionesSinAnuncio = CANCIONES_ENTRE_ANUNCIOS;
+        this.cancionesSinAnuncio = 0;
         this.fechaUltimaReproduccion = null;
     }
 
@@ -74,8 +74,9 @@ public class UsuarioGratuito extends Usuario {
             throw new AnuncioRequeridoException("Anuncio requerido");
         }
         contenido.reproducir();
+        historial.add(contenido);
         this.reproduccionesHoy++;
-        this.cancionesSinAnuncio--;
+        this.cancionesSinAnuncio++;
         this.fechaUltimaReproduccion = new Date();
     }
 
@@ -87,24 +88,23 @@ public class UsuarioGratuito extends Usuario {
 
     public void verAnuncio () {
         Anuncio anuncio = Plataforma.getInstancia().obtenerAnuncioAleatorio();
-        anuncio.reproducir();
+        if (anuncio != null) {
+            anuncio.reproducir();
+        }
         this.anunciosEscuchados++;
-        this.cancionesSinAnuncio = 3;
+        this.cancionesSinAnuncio = 0;
         this.ultimoAnuncio = new Date();
     }
 
     public void verAnuncio(Anuncio anuncio) {
-        if (anuncio == null) {
-            Anuncio anuncioG = Plataforma.getInstancia().obtenerAnuncioAleatorio();
-            if (anuncioG != null) {
-                anuncioG.reproducir();
-            }
-        } else {
+        if (anuncio != null) {
             anuncio.reproducir();
+            this.anunciosEscuchados++;
+            this.cancionesSinAnuncio = 0;
+            this.ultimoAnuncio = new Date();
+        } else {
+            verAnuncio();
         }
-        this.anunciosEscuchados++;
-        this.cancionesSinAnuncio = 3;
-        this.ultimoAnuncio = new Date();
     }
 
     public boolean puedeReproducir () {
@@ -112,7 +112,7 @@ public class UsuarioGratuito extends Usuario {
     }
 
     public boolean debeVerAnuncio () {
-        return this.cancionesSinAnuncio <= 0;
+        return this.cancionesSinAnuncio >= CANCIONES_ENTRE_ANUNCIOS;
     }
 
     public void reiniciarContadorDiario() {
@@ -124,7 +124,7 @@ public class UsuarioGratuito extends Usuario {
     }
 
     public int getCancionesHastaAnuncio () {
-        return this.cancionesSinAnuncio;
+        return CANCIONES_ENTRE_ANUNCIOS - this.cancionesSinAnuncio;
     }
 
 }

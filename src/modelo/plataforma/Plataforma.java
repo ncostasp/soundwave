@@ -460,14 +460,17 @@ public class Plataforma {
      * Obtiene un anuncio aleatorio.
      */
     public Anuncio obtenerAnuncioAleatorio() {
+        Random random = new Random();
         ArrayList<Anuncio> activos = new ArrayList<>();
         for (Anuncio a : anuncios) {
             if (a.puedeMostrarse()) {
                 activos.add(a);
             }
         }
-        if (activos.isEmpty()) return null;
-        Random random = new Random();
+
+        if (activos.isEmpty()) {
+            return anuncios.get(random.nextInt(anuncios.size()));
+        }
         Anuncio anuncio = activos.get(random.nextInt(activos.size()));
         totalAnunciosReproducidos++;
         return anuncio;

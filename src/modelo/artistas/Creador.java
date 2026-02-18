@@ -135,7 +135,7 @@ public class Creador {
 
     public void agregarRedSocial (String red, String usuario) {
         if (red != null && usuario != null && !red.isEmpty() && !usuario.isEmpty()) {
-            redesSociales.put(red, usuario);
+            redesSociales.put(red.toLowerCase(), usuario);
         }
     }
 

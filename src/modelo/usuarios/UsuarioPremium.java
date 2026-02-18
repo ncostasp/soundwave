@@ -70,6 +70,7 @@ public class UsuarioPremium extends Usuario {
     @Override
     public void reproducir(Contenido contenido) throws ContenidoNoDisponibleException, LimiteDiarioAlcanzadoException, AnuncioRequeridoException {
         contenido.reproducir();
+        historial.add(contenido);
     }
 
 
