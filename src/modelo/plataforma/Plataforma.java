@@ -107,8 +107,7 @@ public class Plataforma {
     /**
      * Registra un nuevo usuario Premium.
      */
-    public UsuarioPremium registrarUsuarioPremium(String nombre, String email, String password, TipoSuscripcion tipo)
-            throws UsuarioYaExisteException, EmailInvalidoException, PasswordDebilException {
+    public UsuarioPremium registrarUsuarioPremium(String nombre, String email, String password, TipoSuscripcion tipo) throws UsuarioYaExisteException, EmailInvalidoException, PasswordDebilException {
         validarEmailUnico(email);
         if (tipo == TipoSuscripcion.GRATUITO) {
             tipo = TipoSuscripcion.PREMIUM;
@@ -122,16 +121,14 @@ public class Plataforma {
     /**
      * Registra un nuevo usuario Premium con suscripción PREMIUM por defecto.
      */
-    public UsuarioPremium registrarUsuarioPremium(String nombre, String email, String password)
-            throws UsuarioYaExisteException, EmailInvalidoException, PasswordDebilException {
+    public UsuarioPremium registrarUsuarioPremium(String nombre, String email, String password) throws UsuarioYaExisteException, EmailInvalidoException, PasswordDebilException {
         return registrarUsuarioPremium(nombre, email, password, TipoSuscripcion.PREMIUM);
     }
 
     /**
      * Registra un nuevo usuario Gratuito.
      */
-    public UsuarioGratuito registrarUsuarioGratuito(String nombre, String email, String password)
-            throws UsuarioYaExisteException, EmailInvalidoException, PasswordDebilException {
+    public UsuarioGratuito registrarUsuarioGratuito(String nombre, String email, String password) throws UsuarioYaExisteException, EmailInvalidoException, PasswordDebilException {
         validarEmailUnico(email);
         UsuarioGratuito usuario = new UsuarioGratuito(nombre, email, password);
         usuarios.put(usuario.getId(), usuario);
@@ -237,8 +234,7 @@ public class Plataforma {
     public Artista buscarArtista(String nombre) throws ArtistaNoEncontradoException {
         String nombreLower = nombre.toLowerCase();
         for (Artista artista : artistas.values()) {
-            if (artista.getNombreArtistico().toLowerCase().contains(nombreLower) ||
-                    artista.getNombreReal().toLowerCase().contains(nombreLower)) {
+            if (artista.getNombreArtistico().toLowerCase().contains(nombreLower) || artista.getNombreReal().toLowerCase().contains(nombreLower)) {
                 return artista;
             }
         }
@@ -250,8 +246,7 @@ public class Plataforma {
     /**
      * Crea un nuevo álbum para un artista.
      */
-    public Album crearAlbum(Artista artista, String titulo, Date fecha)
-            throws ArtistaNoVerificadoException, AlbumYaExisteException {
+    public Album crearAlbum(Artista artista, String titulo, Date fecha) throws ArtistaNoVerificadoException, AlbumYaExisteException {
         Album album = artista.crearAlbum(titulo, fecha);
         albumes.add(album);
         return album;
@@ -269,8 +264,7 @@ public class Plataforma {
     /**
      * Crea y registra una nueva canción independiente (sin álbum).
      */
-    public Cancion crearCancion(String titulo, int duracion, Artista artista, GeneroMusical genero)
-            throws DuracionInvalidaException {
+    public Cancion crearCancion(String titulo, int duracion, Artista artista, GeneroMusical genero) throws DuracionInvalidaException {
         Cancion cancion = new Cancion(titulo, duracion, artista, genero);
         catalogo.add(cancion);
         if (artista != null) {
@@ -283,8 +277,7 @@ public class Plataforma {
      * Crea una canción dentro de un álbum (COMPOSICIÓN).
      * La creación se delega al álbum, que es el dueño de las canciones.
      */
-    public Cancion crearCancionEnAlbum(String titulo, int duracion, Artista artista, GeneroMusical genero, Album album)
-            throws DuracionInvalidaException, AlbumCompletoException {
+    public Cancion crearCancionEnAlbum(String titulo, int duracion, Artista artista, GeneroMusical genero, Album album) throws DuracionInvalidaException, AlbumCompletoException {
         // Delegar la creación al álbum (composición)
         Cancion cancion = album.crearCancion(titulo, duracion, genero);
         catalogo.add(cancion);
@@ -337,8 +330,7 @@ public class Plataforma {
     /**
      * Crea y registra un nuevo podcast.
      */
-    public Podcast crearPodcast(String titulo, int duracion, Creador creador, int numEpisodio, int temporada, CategoriaPodcast categoria)
-            throws DuracionInvalidaException, LimiteEpisodiosException {
+    public Podcast crearPodcast(String titulo, int duracion, Creador creador, int numEpisodio, int temporada, CategoriaPodcast categoria) throws DuracionInvalidaException, LimiteEpisodiosException {
         Podcast podcast = new Podcast(titulo, duracion, creador, numEpisodio, temporada, categoria);
         creador.publicarPodcast(podcast);
         catalogo.add(podcast);
@@ -397,8 +389,7 @@ public class Plataforma {
                 resultados.add(contenido);
             } else if (contenido instanceof Cancion) {
                 Cancion cancion = (Cancion) contenido;
-                if (cancion.getArtista() != null &&
-                        cancion.getArtista().getNombreArtistico().toLowerCase().contains(terminoLower)) {
+                if (cancion.getArtista() != null && cancion.getArtista().getNombreArtistico().toLowerCase().contains(terminoLower)) {
                     resultados.add(contenido);
                 }
             }
